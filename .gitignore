@@ -1,0 +1,18 @@
+# ignore sbt related stuff
+project/boot
+*.class
+*.log
+*.war
+*.ear
+target/
+*~
+*.bak
+.DS_Store
+.history
+nb-configuration.xml
+.classpath
+.project
+.settings/
+/bin/
+.cache
+rebel.xml

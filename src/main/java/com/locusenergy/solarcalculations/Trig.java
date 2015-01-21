@@ -1,4 +1,4 @@
-package com.locusenergy.solarlocation;
+package com.locusenergy.solarcalculations;
 
 public class Trig {
 

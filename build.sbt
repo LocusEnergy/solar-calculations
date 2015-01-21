@@ -1,4 +1,4 @@
-name := "Solar Location"
+name := "Solar Calculations"
 
 version := "1.0"
 

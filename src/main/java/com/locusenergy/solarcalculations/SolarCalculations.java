@@ -1,4 +1,4 @@
-package com.locusenergy.solarlocation;
+package com.locusenergy.solarcalculations;
 
 import java.util.Calendar;
 
@@ -8,7 +8,7 @@ import java.util.Calendar;
  * http://www.srrb.noaa.gov/highlights/sunrise/azel.html
  * http://www.esrl.noaa.gov/gmd/grad/solcalc/sunrise.html
  */
-public class SolarLocation {
+public class SolarCalculations {
 
   private static final double I_SC = 1367; // accepted solar constant [W/m^2]
   public static final int SUNRISE = 1; // constant for use in sunrise
@@ -18,19 +18,19 @@ public class SolarLocation {
   private double longitude; // longitude, east positive [degrees]
   private boolean dst; // use daylight savings? default: true
 
-  public SolarLocation(double latitude, double longitude, boolean dst) {
+  public SolarCalculations(double latitude, double longitude, boolean dst) {
     this.latitude = latitude;
     this.longitude = longitude;
     this.dst = dst;
   }
 
-  public SolarLocation(double latitude, double longitude) {
+  public SolarCalculations(double latitude, double longitude) {
     this.latitude = latitude;
     this.longitude = longitude;
     this.dst = true;
   }
 
-  public SolarLocation() {}
+  public SolarCalculations() {}
 
   public void setLatitude(double latitude) {
     this.latitude = latitude;

@@ -2,6 +2,8 @@ name := "Solar Calculations"
 
 version := "1.0"
 
+scalaVersion := "2.11.6"
+
 organization := "com.locusenergy"
 
 libraryDependencies ++= Seq(

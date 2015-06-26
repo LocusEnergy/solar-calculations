@@ -1,4 +1,4 @@
-name := "Solar Calculations"
+name := "SolarCalculations"
 
 version := "1.0"
 

@@ -1,12 +1,14 @@
 package com.locusenergy.solarcalculations;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * computes relevant solar calculations
  * modified from NOAA's calculators:
  * http://www.srrb.noaa.gov/highlights/sunrise/azel.html
  * http://www.esrl.noaa.gov/gmd/grad/solcalc/sunrise.html
+ * javascript: https://www.esrl.noaa.gov/gmd/grad/solcalc/main.js
  */
 public class SolarCalculations {
 
@@ -100,9 +102,9 @@ public class SolarCalculations {
 
   private double getOffset(Calendar cal) {
     if (dst) // use DST
-    return (cal.get(Calendar.DST_OFFSET) + cal.get(Calendar.ZONE_OFFSET))/(3600000);
+      return (cal.get(Calendar.DST_OFFSET) + cal.get(Calendar.ZONE_OFFSET))/(3600000);
     else // don't use DST
-    return (cal.get(Calendar.ZONE_OFFSET))/(3600000);
+      return (cal.get(Calendar.ZONE_OFFSET))/(3600000);
   }
 
   // assumes datetime given in local time
@@ -219,16 +221,17 @@ public class SolarCalculations {
     double solarDeclination = calcSolarDeclination(cal);
     double hourAngle = calcHourAngle(cal);
     double csz = Trig.sinD(this.latitude)*Trig.sinD(solarDeclination) +
-    Trig.cosD(this.latitude)*Trig.cosD(solarDeclination)*Trig.cosD(hourAngle);
+            Trig.cosD(this.latitude)*Trig.cosD(solarDeclination)*Trig.cosD(hourAngle);
     double solarZenith = Math.toDegrees(Math.acos(csz));
 
     if (refraction) {
       double solarElevation = 90 - solarZenith;
       double refractionCorrection = 0;
       double te = Trig.tanD(solarElevation);
-      if (solarElevation <= 85 && solarElevation > 5) refractionCorrection = 58.1/te - 0.07/Math.pow(te, 3) + 0.000086/Math.pow(te, 5);
-      else if (solarElevation <= 85 && solarElevation > -0.575) refractionCorrection = 1735 + solarElevation*(-518.2 + solarElevation*(103.4 + solarElevation*(-12.79 + solarElevation*0.711)));
-      else refractionCorrection = -20.774/te;
+      if (solarElevation <= -0.575) refractionCorrection = -20.774/te;
+      else if (solarElevation <= 5) refractionCorrection = 1735 + solarElevation*(-518.2 + solarElevation*(103.4 + solarElevation*(-12.79 + solarElevation*0.711)));
+      else if (solarElevation <= 85) refractionCorrection = 58.1/te - 0.07/Math.pow(te, 3) + 0.000086/Math.pow(te, 5);
+      else refractionCorrection = 0;
       solarZenith -= refractionCorrection/3600;
     }
 
@@ -264,8 +267,9 @@ public class SolarCalculations {
 
   // returns: extraterrestrial irradiance [W/m^2]
   public double calcExtraIrradiance(Calendar cal) {
+    cal.setTimeZone(TimeZone.getTimeZone("UTC"));
     double doy = cal.get(Calendar.DAY_OF_YEAR);
-    double output = I_SC*(1 + Trig.cosD(360*doy/365)/30);
+    double output = I_SC*(1.00011 + 0.034221*Trig.cosD(360*doy/365) + 0.00128*Trig.sinD(360*doy/365) + 0.000719*Trig.cosD(2*360*doy/365) + 0.000077*Trig.sinD(2*360*doy/365));
     return output;
   }
 
